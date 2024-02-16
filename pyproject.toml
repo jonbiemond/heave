@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "heave"
+version = "0.1.0"
+description = "CLI tool to batch update or insert data."
+authors = ["Jonathan Biemond <jonathan.biemond@devrygreenhouses.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "heave"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+psycopg = "^3.1.18"
+sqlalchemy = "^2.0.27"
+click = "^8.1.7"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.2.1"
+pytest = "^8.0.0"
+coverage = "^7.4.1"
+pre-commit = "^3.6.1"
+python-semantic-release = "^9.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
