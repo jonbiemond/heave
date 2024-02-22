@@ -25,6 +25,9 @@ python-semantic-release = "^9.1.0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry.scripts]
+heave = "heave.cli:cli"
+
 [tool.ruff]
 lint.select = [
     "E",   # pycodestyle
