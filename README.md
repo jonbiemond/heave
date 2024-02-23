@@ -4,7 +4,10 @@ Heave is a CLI tool for batch inserting or updating data into a database.
 
 ## Installation
 
-...
+It is recommended to install `heave` using [pipx](https://github.com/pypa/pipx):
+```bash
+pipx install heave
+```
 
 ## Usage
 
