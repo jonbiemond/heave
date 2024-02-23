@@ -54,15 +54,19 @@ heave insert --table mytable data.csv
 
 ## Supported Formats
 
-...
+Currently, Heave only supports extracting data from CSV files and loading it into a PostgreSQL database.
 
 ### Sources
 
-...
+Supported data sources include:
+
+* CSV files: `.csv`
 
 ### Databases
 
-...
+Supported target databases include:
+
+* PostgreSQL
 
 ## Examples
 
