@@ -77,6 +77,10 @@ class TestCli:
         """Test the default connection parameters by calling a subcommand."""
         mock_connect = Mock()
         monkeypatch.setattr("heave.cli.connect", mock_connect)
+        monkeypatch.delenv("PGHOST", raising=False)
+        monkeypatch.delenv("PGPORT", raising=False)
+        monkeypatch.delenv("PGUSER", raising=False)
+        monkeypatch.delenv("PGDATABASE", raising=False)
         runner.invoke(cli, ["insert"])
         mock_connect.assert_called_with(
             ANY, "postgresql", "postgres", "localhost", "5432", "", "psycopg"
