@@ -14,6 +14,10 @@ Create a connection to a PostgreSQL database.
 
 Defaults to the `postgres` database on `localhost` with the `postgres` user.
 Pass alternate connection parameters as options.
+You can save yourself some typing by setting the environment variables `PGDATABASE`, 
+`PGHOST`, `PGPORT` and/or `PGUSER` to appropriate values.
+It is also convenient to have a [.pgpass](https://www.postgresql.org/docs/current/libpq-pgpass.html) file 
+to avoid regularly having to type in passwords.
 
 #### Options
 

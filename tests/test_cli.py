@@ -78,8 +78,21 @@ class TestCli:
         mock_connect = Mock()
         monkeypatch.setattr("heave.cli.connect", mock_connect)
         runner.invoke(cli, ["insert"])
-        assert mock_connect.called_with(
+        mock_connect.assert_called_with(
             ANY, "postgresql", "postgres", "localhost", "5432", "", "psycopg"
+        )
+
+    def test_connection_envvars(self, runner, monkeypatch):
+        """Test the connection parameters from environment variables."""
+        mock_connect = Mock()
+        monkeypatch.setattr("heave.cli.connect", mock_connect)
+        monkeypatch.setenv("PGHOST", "myhost")
+        monkeypatch.setenv("PGPORT", "1234")
+        monkeypatch.setenv("PGUSER", "myuser")
+        monkeypatch.setenv("PGDATABASE", "mydb")
+        runner.invoke(cli, ["insert"])
+        mock_connect.assert_called_with(
+            ANY, "postgresql", "mydb", "myhost", "1234", "myuser", "psycopg"
         )
 
     def test_insert(self, runner, monkeypatch):

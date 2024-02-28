@@ -77,8 +77,15 @@ def connect(
     "--username",
     default="",
     help="Username to connect to the postgres database.",
+    envvar="PGUSER",
 )
-@click.option("-d", "--dbname", default="postgres", help="Database name to connect to.")
+@click.option(
+    "-d",
+    "--dbname",
+    default="postgres",
+    help="Database name to connect to.",
+    envvar="PGDATABASE",
+)
 @click.pass_context
 def cli(
     ctx,
