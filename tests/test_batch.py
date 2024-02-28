@@ -16,8 +16,8 @@ class TestSql:
         """Test the insert function."""
         data = Table(
             [
-                ["username", "email", "password"],
-                ["jane.doe", "janedoe@example.com", "yourSecurePassword"],
+                ("username", "email", "password"),
+                ("jane.doe", "janedoe@example.com", "yourSecurePassword"),
             ]
         )
         sql_table = batch.reflect_table(connection, "user")

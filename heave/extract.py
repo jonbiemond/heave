@@ -5,12 +5,12 @@ import csv
 class Table:
     """Two-dimensional data with a header."""
 
-    def __init__(self, data: list[list[str]]):
+    def __init__(self, data: list[tuple[str, ...]]):
         """Initialise table with data."""
         self._data = data
 
     @property
-    def header(self):
+    def header(self) -> tuple[str, ...]:
         """Return the table header."""
         return self._data[0]
 
@@ -25,5 +25,5 @@ def read_csv(file: str) -> Table:
     """Read a csv file and return a Table."""
     with open(file, "r") as f:
         reader = csv.reader(f)
-        data = [row for row in reader]
+        data = [tuple(row) for row in reader]
     return Table(data)

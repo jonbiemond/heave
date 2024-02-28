@@ -34,5 +34,5 @@ class TestCsv:
     def test_read_csv(self):
         """Test reading a csv file."""
         table = read_csv(self.test_file)
-        assert table.header == ["header1", "header2"]
-        assert [row for row in table.rows] == [["data1", "data2"]]
+        assert table.header == ("header1", "header2")
+        assert [row for row in table.rows] == [("data1", "data2")]

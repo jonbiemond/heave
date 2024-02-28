@@ -103,8 +103,8 @@ class TestCli:
         """Test the insert command."""
         data = Table(
             [
-                ["username", "email", "password"],
-                ["jane.doe", "janedoe@example.com", "yourSecurePassword"],
+                ("username", "email", "password"),
+                ("jane.doe", "janedoe@example.com", "yourSecurePassword"),
             ]
         )
         monkeypatch.setattr("heave.extract.read_csv", Mock(return_value=data))
