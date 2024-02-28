@@ -3,7 +3,7 @@ import os
 
 import pytest
 
-from heave.extract import Table, read_csv
+from heave.file import Table, read_csv
 
 
 class TestTable:

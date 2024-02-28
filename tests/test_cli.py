@@ -107,7 +107,7 @@ class TestCli:
                 ("jane.doe", "janedoe@example.com", "yourSecurePassword"),
             ]
         )
-        monkeypatch.setattr("heave.extract.read_csv", Mock(return_value=data))
+        monkeypatch.setattr("heave.file.read_csv", Mock(return_value=data))
         result = runner.invoke(cli, ["insert", "--table", "user", self.test_file])
         assert result.exit_code == 0
         assert "Inserted rows into user." in result.output

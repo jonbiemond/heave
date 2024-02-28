@@ -5,7 +5,7 @@ import click
 from sqlalchemy import create_engine
 from sqlalchemy.exc import OperationalError
 
-from heave import batch, extract
+from heave import file, sql
 
 
 def connect(
@@ -107,7 +107,7 @@ def cli(
 @click.pass_obj
 def insert(obj, path: str, table: str):
     """Insert data from a file into a table."""
-    data = extract.read_csv(path)
-    sql_table = batch.reflect_table(obj, table)
-    batch.insert(obj, sql_table, data)
+    data = file.read_csv(path)
+    sql_table = sql.reflect_table(obj, table)
+    sql.insert(obj, sql_table, data)
     click.echo(f"Inserted rows into {sql_table.name}.")
