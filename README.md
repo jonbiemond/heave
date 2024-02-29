@@ -56,6 +56,23 @@ Insert data from a file into a table.
 heave insert --table mytable data.csv
 ```
 
+### heave read
+
+`heave read --table TEXT <file>`
+
+Read data from an SQL table and write it to a file.
+
+#### Options
+
+`-t`, `--table TEXT`
+- Name of the table to read from. Required.
+
+#### Examples
+
+```bash
+heave read --table mytable data.csv
+```
+
 ## Supported Formats
 
 Currently, Heave only supports extracting data from CSV files and loading it into a PostgreSQL database.

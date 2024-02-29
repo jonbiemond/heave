@@ -111,3 +111,15 @@ def insert(obj, path: str, table: str):
     sql_table = sql.reflect_table(obj, table)
     sql.insert(obj, sql_table, data)
     click.echo(f"Inserted rows into {sql_table.name}.")
+
+
+@cli.command()
+@click.argument("path", type=click.Path(exists=False))
+@click.option("-t", "--table", required=True, help="Table to read.")
+@click.pass_obj
+def read(obj, path: str, table: str):
+    """Read data from a table and write it to a file."""
+    sql_table = sql.reflect_table(obj, table)
+    data = sql.read(obj, sql_table)
+    file.write_csv(data, path)
+    click.echo(f"Wrote data to {path}.")

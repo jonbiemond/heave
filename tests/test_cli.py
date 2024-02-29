@@ -111,3 +111,12 @@ class TestCli:
         result = runner.invoke(cli, ["insert", "--table", "user", self.test_file])
         assert result.exit_code == 0
         assert "Inserted rows into user." in result.output
+
+    def test_read(self, runner, monkeypatch):
+        """Test the read command."""
+        mock_write_csv = Mock()
+        monkeypatch.setattr("heave.file.write_csv", mock_write_csv)
+        result = runner.invoke(cli, ["read", "--table", "user", self.test_file])
+        assert mock_write_csv.called
+        assert result.exit_code == 0
+        assert f"Wrote data to {self.test_file}." in result.output
