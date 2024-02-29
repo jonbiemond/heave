@@ -20,10 +20,22 @@ class Table:
         for row in self._data[1:]:
             yield row
 
+    def __eq__(self, other):
+        """Return True if the data is equal."""
+        return self._data == other._data
+
 
 def read_csv(file: str) -> Table:
     """Read a csv file and return a Table."""
-    with open(file, "r") as f:
+    with open(file, "r", newline="") as f:
         reader = csv.reader(f)
         data = [tuple(row) for row in reader]
     return Table(data)
+
+
+def write_csv(data: Table, file: str) -> None:
+    """Write a Table to a csv file."""
+    with open(file, "w", newline="") as f:
+        writer = csv.writer(f)
+        rows = [data.header, *data.rows]
+        writer.writerows(rows)

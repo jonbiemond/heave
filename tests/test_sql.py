@@ -26,3 +26,15 @@ class TestSql:
             text("SELECT * FROM user WHERE username = 'jane.doe';")
         )
         assert result.fetchone() is not None
+
+    def test_read(self, connection):
+        """Test the read function."""
+        data = sql.read(connection, sql.reflect_table(connection, "user"))
+        assert data == Table(
+            [
+                ("id", "username", "email", "password"),
+                (1, "john.doe", "johndoe@example.com", "yourSecurePassword"),
+                (2, "jane.smith", "janesmith@example.com", "anotherSecurePassword"),
+                (3, "bob.johnson", "bob.johnson@example.com", "superSecurePassword"),
+            ]
+        )
