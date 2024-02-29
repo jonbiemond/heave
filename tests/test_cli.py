@@ -8,7 +8,7 @@ from psycopg import OperationalError as PsycopgOperationalError
 from sqlalchemy import Connection
 from sqlalchemy.exc import OperationalError
 
-from heave import Table
+from heave import Table, file
 from heave.cli import cli, connect
 
 
@@ -111,6 +111,25 @@ class TestCli:
         result = runner.invoke(cli, ["insert", "--table", "user", self.test_file])
         assert result.exit_code == 0
         assert "Inserted rows into user." in result.output
+
+    def test_insert_error(self, runner, monkeypatch):
+        """Test that changes are rolled back on error."""
+        # insert duplicate data
+        data = Table(
+            [
+                ("username", "email", "password"),
+                ("jane.doe", "janedoe@example.com", "yourSecurePassword"),
+                ("jane.doe", "janedoe@example.com", "yourSecurePassword"),
+            ]
+        )
+        monkeypatch.setattr("heave.file.read_csv", Mock(return_value=data))
+        result = runner.invoke(cli, ["insert", "--table", "user", self.test_file])
+        assert result.exit_code == 1
+        result = runner.invoke(cli, ["read", "--table", "user", self.test_file])
+        assert result.exit_code == 0
+        table = file.read_csv(self.test_file)
+        for row in table.rows:
+            assert row[1] != "jane.doe"
 
     def test_read(self, runner, monkeypatch):
         """Test the read command."""
