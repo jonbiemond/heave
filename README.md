@@ -98,4 +98,5 @@ Supported target databases include:
 
 ## Contributing
 
-...
+Contributions are welcome! Pick an existing issue or create a new one.
+Then follow the steps in [CONTRIBUTING.md](/CONTRIBUTING.md) to make your change.`
