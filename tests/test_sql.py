@@ -11,6 +11,9 @@ class TestSql:
         """Test the reflect_table function."""
         table = sql.reflect_table(connection, "user")
         assert table.name == "user"
+        table = sql.reflect_table(connection, "record", "sales")
+        assert table.name == "record"
+        assert table.schema == "sales"
 
     def test_insert(self, connection):
         """Test the insert function."""

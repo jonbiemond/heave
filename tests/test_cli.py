@@ -112,6 +112,15 @@ class TestCli:
         assert result.exit_code == 0
         assert "Inserted rows into user." in result.output
 
+    def test_insert_schema(self, runner, monkeypatch):
+        """Test schema option is passed to table reflection."""
+        mock_reflect_table = Mock()
+        monkeypatch.setattr("heave.sql.reflect_table", mock_reflect_table)
+        runner.invoke(
+            cli, ["insert", "--schema", "time", "--table", "clock", self.test_file]
+        )
+        mock_reflect_table.assert_called_with(ANY, "clock", "time")
+
     def test_insert_error(self, runner, monkeypatch):
         """Test that changes are rolled back on error."""
         # insert duplicate data
@@ -139,3 +148,12 @@ class TestCli:
         assert mock_write_csv.called
         assert result.exit_code == 0
         assert f"Wrote data to {self.test_file}." in result.output
+
+    def test_read_schema(self, runner, monkeypatch):
+        """Test schema option is passed to table reflection."""
+        mock_reflect_table = Mock()
+        monkeypatch.setattr("heave.sql.reflect_table", mock_reflect_table)
+        runner.invoke(
+            cli, ["read", "--schema", "time", "--table", "clock", self.test_file]
+        )
+        mock_reflect_table.assert_called_with(ANY, "clock", "time")

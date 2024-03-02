@@ -104,11 +104,12 @@ def cli(
 @cli.command()
 @click.argument("path", type=click.Path(exists=True))
 @click.option("-t", "--table", required=True, help="Table to insert into.")
+@click.option("-s", "--schema", help="Table schema name.")
 @click.pass_obj
-def insert(obj, path: str, table: str):
+def insert(obj, path: str, table: str, schema: str | None):
     """Insert data from a file into a table."""
     data = file.read_csv(path)
-    sql_table = sql.reflect_table(obj, table)
+    sql_table = sql.reflect_table(obj, table, schema)
     sql.insert(obj, sql_table, data)
     click.echo(f"Inserted rows into {sql_table.name}.")
 
@@ -116,10 +117,11 @@ def insert(obj, path: str, table: str):
 @cli.command()
 @click.argument("path", type=click.Path(exists=False))
 @click.option("-t", "--table", required=True, help="Table to read.")
+@click.option("-s", "--schema", help="Table schema name.")
 @click.pass_obj
-def read(obj, path: str, table: str):
+def read(obj, path: str, table: str, schema: str | None):
     """Read data from a table and write it to a file."""
-    sql_table = sql.reflect_table(obj, table)
+    sql_table = sql.reflect_table(obj, table, schema)
     data = sql.read(obj, sql_table)
     file.write_csv(data, path)
     click.echo(f"Wrote data to {path}.")
