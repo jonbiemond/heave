@@ -2,6 +2,21 @@
 
 
 
+## v0.2.0 (2024-03-05)
+
+### Documentation
+
+* docs: add contributing instructions ([`4feb311`](https://github.com/jonbiemond/heave/commit/4feb3114214906af47d7785e89fbbbbcb365b963))
+
+### Feature
+
+* feat(cli): add schema option
+
+Allow user to specify table schema.
+
+Closes #11 ([`e348668`](https://github.com/jonbiemond/heave/commit/e34866851ecc13ffb3d481c6717d84e3e0f96f7e))
+
+
 ## v0.1.0 (2024-03-01)
 
 ### Chore
