@@ -12,7 +12,7 @@ def init_db() -> Engine:
     engine = create_engine("sqlite:///:memory:")
 
     # insert test data
-    with open("tests/test_db.sql", "r") as f:
+    with open("tests/test_db.sql") as f:
         statements = f.read().split(";")
     with engine.begin() as connection:
         for statement in statements:

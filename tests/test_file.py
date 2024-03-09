@@ -36,7 +36,7 @@ class TestCsv:
         """Test reading a csv file."""
         table = file.read_csv(self.test_file)
         assert table.header == ("header1", "header2")
-        assert [row for row in table.rows] == [("data1", "data2")]
+        assert list(table.rows) == [("data1", "data2")]
 
     def test_write_csv(self):
         """Test writing a csv file."""

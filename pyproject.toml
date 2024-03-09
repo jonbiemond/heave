@@ -35,8 +35,11 @@ lint.select = [
     "W",   # pycodestyle
     "B",   # bugbear
     "I",   # isort
-    "RUF", # ruff,
+    "RUF", # ruff
     "D",   # pydocstyle
+    "A",   # builtins
+    "C4",  # comprehension
+    "UP",  # pyupgrade
 ]
 
 lint.ignore = [

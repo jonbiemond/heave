@@ -17,8 +17,7 @@ class Table:
     @property
     def rows(self):
         """Yield the table rows."""
-        for row in self._data[1:]:
-            yield row
+        yield from self._data[1:]
 
     def __eq__(self, other):
         """Return True if the data is equal."""
@@ -27,7 +26,7 @@ class Table:
 
 def read_csv(file: str) -> Table:
     """Read a csv file and return a Table."""
-    with open(file, "r", newline="") as f:
+    with open(file, newline="") as f:
         reader = csv.reader(f)
         data = [tuple(row) for row in reader]
     return Table(data)

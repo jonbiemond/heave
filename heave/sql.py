@@ -22,4 +22,4 @@ def insert(connection: Connection, sql_table: SqlTable, data: Table) -> None:
 def read(connection: Connection, sql_table: SqlTable) -> Table:
     """Read data from a table."""
     result = connection.execute(sql_table.select())
-    return Table([tuple(sql_table.columns.keys())] + [row for row in result])
+    return Table([tuple(sql_table.columns.keys()), *result])
