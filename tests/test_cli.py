@@ -140,6 +140,26 @@ class TestCli:
         for row in table.rows:
             assert row[1] != "jane.doe"
 
+    def test_insert_conflict(self, runner, monkeypatch):
+        """Test that on-conflict option is passed to insert function."""
+        mock_insert = Mock()
+        monkeypatch.setattr("heave.sql.insert", mock_insert)
+        result = runner.invoke(
+            cli,
+            ["insert", "--table", "user", "--on-conflict", "nothing", self.test_file],
+        )
+        assert result.exit_code == 0
+        mock_insert.assert_called()
+        assert mock_insert.call_args.kwargs["on_conflict"] == "nothing"
+
+    def test_insert_conflict_invalid(self, runner):
+        """Test that the on-conflict option only accepts valid choices."""
+        result = runner.invoke(
+            cli, ["insert", "--table", "user", "--on-conflict", "foo", self.test_file]
+        )
+        assert result.exit_code == 2
+        assert "Error: Invalid value for '--on-conflict': 'foo' is not one of 'nothing', 'update'."
+
     def test_read(self, runner, monkeypatch):
         """Test the read command."""
         mock_write_csv = Mock()

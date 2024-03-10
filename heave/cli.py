@@ -105,12 +105,18 @@ def cli(
 @click.argument("path", type=click.Path(exists=True))
 @click.option("-t", "--table", required=True, help="Table to insert into.")
 @click.option("-s", "--schema", help="Table schema name.")
+@click.option(
+    "-oc",
+    "--on-conflict",
+    type=click.Choice(["nothing", "update"], case_sensitive=False),
+    help="Handle conflict errors.",
+)
 @click.pass_obj
-def insert(obj, path: str, table: str, schema: str | None):
+def insert(obj, path: str, table: str, schema: str | None, on_conflict: str | None):
     """Insert data from a file into a table."""
     data = file.read_csv(path)
     sql_table = sql.reflect_table(obj, table, schema)
-    sql.insert(obj, sql_table, data)
+    sql.insert(obj, sql_table, data, on_conflict=on_conflict)
     click.echo(f"Inserted rows into {sql_table.name}.")
 
 
