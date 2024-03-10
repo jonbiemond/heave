@@ -53,6 +53,9 @@ Insert data from a file into a table.
 `-t`, `--table TEXT`
 - Name of the table to insert into. Required.
 
+`-oc`, `--on-conflict TEXT`
+- How to handle insert conflicts. [nothing|update]
+
 #### Examples
 
 ```bash
