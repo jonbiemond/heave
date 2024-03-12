@@ -1,5 +1,6 @@
 """Tests for the extract module."""
 import os
+from pathlib import Path
 
 import pytest
 
@@ -21,7 +22,7 @@ class TestTable:
 class TestCsv:
     """Test the read_csv function."""
 
-    test_file = "temp.csv"
+    test_file = Path("temp.csv")
 
     @pytest.fixture(autouse=True)
     def temp_file(self):

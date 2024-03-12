@@ -1,5 +1,6 @@
 """Extract tabular data into a custom Table object."""
 import csv
+from pathlib import Path
 
 
 class Table:
@@ -24,7 +25,7 @@ class Table:
         return self._data == other._data
 
 
-def read_csv(file: str) -> Table:
+def read_csv(file: Path) -> Table:
     """Read a csv file and return a Table."""
     with open(file, newline="") as f:
         reader = csv.reader(f)
@@ -32,7 +33,7 @@ def read_csv(file: str) -> Table:
     return Table(data)
 
 
-def write_csv(data: Table, file: str) -> None:
+def write_csv(data: Table, file: Path) -> None:
     """Write a Table to a csv file."""
     with open(file, "w", newline="") as f:
         writer = csv.writer(f)

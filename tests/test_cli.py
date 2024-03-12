@@ -1,6 +1,7 @@
 """Test CLI."""
 
 import os
+from pathlib import Path
 from unittest.mock import ANY, Mock
 
 import pytest
@@ -117,9 +118,9 @@ class TestCli:
         mock_reflect_table = Mock()
         monkeypatch.setattr("heave.sql.reflect_table", mock_reflect_table)
         runner.invoke(
-            cli, ["insert", "--schema", "time", "--table", "clock", self.test_file]
+            cli, ["insert", "--schema", "sales", "--table", "record", self.test_file]
         )
-        mock_reflect_table.assert_called_with(ANY, "clock", "time")
+        mock_reflect_table.assert_called_with(ANY, "record", "sales")
 
     def test_insert_error(self, runner, monkeypatch):
         """Test that changes are rolled back on error."""
@@ -136,7 +137,7 @@ class TestCli:
         assert result.exit_code == 1
         result = runner.invoke(cli, ["read", "--table", "user", self.test_file])
         assert result.exit_code == 0
-        table = file.read_csv(self.test_file)
+        table = file.read_csv(Path(self.test_file))
         for row in table.rows:
             assert row[1] != "jane.doe"
 
@@ -158,7 +159,10 @@ class TestCli:
             cli, ["insert", "--table", "user", "--on-conflict", "foo", self.test_file]
         )
         assert result.exit_code == 2
-        assert "Error: Invalid value for '--on-conflict': 'foo' is not one of 'nothing', 'update'."
+        assert (
+            "Error: Invalid value for '-oc' / '--on-conflict': 'foo' is not one of 'nothing', 'update'."
+            in result.output
+        )
 
     def test_read(self, runner, monkeypatch):
         """Test the read command."""
@@ -174,6 +178,12 @@ class TestCli:
         mock_reflect_table = Mock()
         monkeypatch.setattr("heave.sql.reflect_table", mock_reflect_table)
         runner.invoke(
-            cli, ["read", "--schema", "time", "--table", "clock", self.test_file]
+            cli, ["read", "--schema", "sales", "--table", "record", self.test_file]
         )
-        mock_reflect_table.assert_called_with(ANY, "clock", "time")
+        mock_reflect_table.assert_called_with(ANY, "record", "sales")
+
+    def test_read_invalid_directory(self, runner):
+        """Test that Click error is raised for a non-existant directory."""
+        result = runner.invoke(cli, ["read", "--table", "user", "invalid/myfile.csv"])
+        assert result.exit_code == 1
+        assert "Error: No such directory: 'invalid'" in result.output
