@@ -2,6 +2,36 @@
 
 
 
+## v0.3.0 (2024-03-12)
+
+### Chore
+
+* chore: extend ruff lint rules ([`1026b08`](https://github.com/jonbiemond/heave/commit/1026b08ccbd8942fb111f10bce46bbc2f85d8d09))
+
+### Documentation
+
+* docs: add on-conflict option ([`d6980f6`](https://github.com/jonbiemond/heave/commit/d6980f64c7f17e6ff65b0420028a7d4de4384db8))
+
+### Feature
+
+* feat(cli): neatly handle invalid directory
+
+Raise a user friendly CLick error
+if user passes a directory that doesn&#39;t exist to the read command.
+
+Closes #5 ([`b10c891`](https://github.com/jonbiemond/heave/commit/b10c8914e6597f0e6c37571ea5d6787e431c3ea3))
+
+* feat(cli): add on-conflict option to insert
+
+Allow user to specify how insert conflicts should be handled.
+
+Closes #14 ([`c27986a`](https://github.com/jonbiemond/heave/commit/c27986a6a272f58af78edd24976ee2e6c46ba2d7))
+
+* feat(sql): handle conflicts on insert
+
+Add parameter to handle conflicts by doing nothing or emitting an update. ([`c8a75e1`](https://github.com/jonbiemond/heave/commit/c8a75e1fd805b7090545f1bc90c9e98bfde1a7a9))
+
+
 ## v0.2.0 (2024-03-05)
 
 ### Documentation
