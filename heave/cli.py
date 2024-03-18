@@ -1,4 +1,5 @@
 """Heave CLI."""
+import sys
 from pathlib import Path
 
 import click
@@ -98,7 +99,8 @@ def cli(
     # default to postgres connection parameters
     dialect = "postgresql"
     driver = "psycopg"
-    connect(ctx, dialect, dbname, host, str(port), username, driver)
+    if "--help" not in sys.argv:
+        connect(ctx, dialect, dbname, host, str(port), username, driver)
 
 
 @cli.command()

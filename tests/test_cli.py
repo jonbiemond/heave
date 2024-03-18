@@ -68,10 +68,13 @@ class TestCli:
         yield
         os.remove(self.test_file)
 
-    def test_help(self, runner):
+    def test_help(self, runner, monkeypatch):
         """Test the help flag."""
+        mock_connect = Mock()
+        monkeypatch.setattr("heave.cli.connect", mock_connect)
         result = runner.invoke(cli, ["--help"])
         assert result.exit_code == 0
+        assert mock_connect.called is False
         assert "Show this message and exit." in result.output
 
     def test_connection(self, runner, monkeypatch):
