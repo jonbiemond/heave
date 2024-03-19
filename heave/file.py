@@ -2,6 +2,8 @@
 import csv
 from pathlib import Path
 
+from heave import utils
+
 
 class Table:
     """Two-dimensional data with a header."""
@@ -27,6 +29,8 @@ class Table:
 
 def read_csv(file: Path) -> Table:
     """Read a csv file and return a Table."""
+    if file.suffix == ".xlsx":
+        file = utils.xlsx_to_csv(file)
     with open(file, newline="") as f:
         reader = csv.reader(f)
         data = [tuple(row) for row in reader]
