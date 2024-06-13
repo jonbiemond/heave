@@ -2,7 +2,7 @@
 
 import os
 from pathlib import Path
-from unittest.mock import ANY, Mock
+from unittest.mock import ANY, MagicMock, Mock
 
 import pytest
 from psycopg import OperationalError as PsycopgOperationalError
@@ -34,7 +34,7 @@ class TestHelpers:
             connect(ctx, "sqlite", database=":memory:")
 
     def test_connect_invalid_password(self, monkeypatch):
-        """Test that connect prompts for password if connection fails."""
+        """Connect prompts for password if connection fails."""
         # mock engine
         mock_engine = Mock()
         mock_engine.connect.side_effect = OperationalError(
@@ -53,6 +53,19 @@ class TestHelpers:
             connect(ctx, "sqlite", database=":memory:", user="test")
         assert mock_prompt.called
 
+    def test_echo(self, monkeypatch):
+        """Connect passes the echo value to create_engine."""
+        mock_create_engine = MagicMock()
+        monkeypatch.setattr("heave.cli.create_engine", mock_create_engine)
+        connect(
+            cli.make_context("test", ["TEST"]),
+            "sqlite",
+            database=":memory",
+            user="test",
+            echo=True,
+        )
+        assert mock_create_engine.call_args.kwargs["echo"] is True
+
 
 class TestCli:
     """Test the CLI."""
@@ -69,7 +82,7 @@ class TestCli:
         os.remove(self.test_file)
 
     def test_help(self, runner, monkeypatch):
-        """Test the help flag."""
+        """Connect is not called if the help flag is passed."""
         mock_connect = Mock()
         monkeypatch.setattr("heave.cli.connect", mock_connect)
         result = runner.invoke(cli, ["--help"])
@@ -78,7 +91,7 @@ class TestCli:
         assert "Show this message and exit." in result.output
 
     def test_connection(self, runner, monkeypatch):
-        """Test the default connection parameters by calling a subcommand."""
+        """Connect is called with defaults if no connection parameters are supplied."""
         mock_connect = Mock()
         monkeypatch.setattr("heave.cli.connect", mock_connect)
         monkeypatch.delenv("PGHOST", raising=False)
@@ -87,11 +100,18 @@ class TestCli:
         monkeypatch.delenv("PGDATABASE", raising=False)
         runner.invoke(cli, ["insert"])
         mock_connect.assert_called_with(
-            ANY, "postgresql", "postgres", "localhost", "5432", "", "psycopg"
+            ANY,
+            "postgresql",
+            "postgres",
+            "localhost",
+            "5432",
+            "",
+            "psycopg",
+            echo=False,
         )
 
     def test_connection_envvars(self, runner, monkeypatch):
-        """Test the connection parameters from environment variables."""
+        """Connect is called with values from environment variables if they exist and no connection parameters are supplied."""
         mock_connect = Mock()
         monkeypatch.setattr("heave.cli.connect", mock_connect)
         monkeypatch.setenv("PGHOST", "myhost")
@@ -100,8 +120,15 @@ class TestCli:
         monkeypatch.setenv("PGDATABASE", "mydb")
         runner.invoke(cli, ["insert"])
         mock_connect.assert_called_with(
-            ANY, "postgresql", "mydb", "myhost", "1234", "myuser", "psycopg"
+            ANY, "postgresql", "mydb", "myhost", "1234", "myuser", "psycopg", echo=False
         )
+
+    def test_echo(self, runner, monkeypatch):
+        """Connect is called with echo=True if the echo flag is passed."""
+        mock_connect = Mock()
+        monkeypatch.setattr("heave.cli.connect", mock_connect)
+        runner.invoke(cli, ["--echo", "insert"])
+        assert mock_connect.call_args.kwargs["echo"] is True
 
     def test_insert(self, runner, monkeypatch):
         """Test the insert command."""
@@ -117,7 +144,7 @@ class TestCli:
         assert "Inserted rows into user." in result.output
 
     def test_insert_schema(self, runner, monkeypatch):
-        """Test schema option is passed to table reflection."""
+        """Schema option is passed to table reflection."""
         mock_reflect_table = Mock()
         monkeypatch.setattr("heave.sql.reflect_table", mock_reflect_table)
         runner.invoke(
@@ -126,7 +153,7 @@ class TestCli:
         mock_reflect_table.assert_called_with(ANY, "record", "sales")
 
     def test_insert_error(self, runner, monkeypatch):
-        """Test that changes are rolled back on error."""
+        """Changes are rolled back on error."""
         # insert duplicate data
         data = Table(
             [
@@ -145,7 +172,7 @@ class TestCli:
             assert row[1] != "jane.doe"
 
     def test_insert_conflict(self, runner, monkeypatch):
-        """Test that on-conflict option is passed to insert function."""
+        """The on-conflict option is passed to the insert function."""
         mock_insert = Mock()
         monkeypatch.setattr("heave.sql.insert", mock_insert)
         result = runner.invoke(
@@ -157,7 +184,7 @@ class TestCli:
         assert mock_insert.call_args.kwargs["on_conflict"] == "nothing"
 
     def test_insert_conflict_invalid(self, runner):
-        """Test that the on-conflict option only accepts valid choices."""
+        """The on-conflict option only accepts valid choices."""
         result = runner.invoke(
             cli, ["insert", "--table", "user", "--on-conflict", "foo", self.test_file]
         )
@@ -168,7 +195,7 @@ class TestCli:
         )
 
     def test_read(self, runner, monkeypatch):
-        """Test the read command."""
+        """write_csv is called from the read command."""
         mock_write_csv = Mock()
         monkeypatch.setattr("heave.file.write_csv", mock_write_csv)
         result = runner.invoke(cli, ["read", "--table", "user", self.test_file])
@@ -177,7 +204,7 @@ class TestCli:
         assert f"Wrote data to {self.test_file}." in result.output
 
     def test_read_schema(self, runner, monkeypatch):
-        """Test schema option is passed to table reflection."""
+        """The schema option is passed to table reflection."""
         mock_reflect_table = Mock()
         monkeypatch.setattr("heave.sql.reflect_table", mock_reflect_table)
         runner.invoke(
@@ -186,7 +213,7 @@ class TestCli:
         mock_reflect_table.assert_called_with(ANY, "record", "sales")
 
     def test_read_invalid_directory(self, runner):
-        """Test that Click error is raised for a non-existant directory."""
+        """A Click error is raised for a non-existant directory."""
         result = runner.invoke(cli, ["read", "--table", "user", "invalid/myfile.csv"])
         assert result.exit_code == 1
         assert "Error: No such directory: 'invalid'" in result.output

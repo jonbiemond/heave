@@ -17,6 +17,7 @@ def connect(
     port: str = "",
     user: str = "",
     driver: str = "",
+    echo: bool = False,
 ) -> None:
     """Initialize a database connection and add it to the click context.
 
@@ -25,19 +26,20 @@ def connect(
     Adds a connection to the click context as a resource.
     Heavily inspired by pgcli: https://github.com/dbcli/pgcli/blob/main/pgcli/main.py
 
-    :param context: Click context.
-    :param dialect: Database dialect.
-    :param driver: Database driver.
-    :param database: Database name.
-    :param host: Database host.
-    :param user: Database user.
-    :param port: Database port.
+    :param context: Click context
+    :param dialect: Database dialect
+    :param driver: Database driver
+    :param database: Database name
+    :param host: Database host
+    :param user: Database user
+    :param port: Database port
+    :param echo: Spray SQL statements to stdout
     """
     driver = "+" + driver if driver else ""
     host = "@" + host if user else host
     port = ":" + port if port else port
     db_url = f"{dialect}{driver}://{user}{host}{port}/{database}"
-    engine = create_engine(db_url)
+    engine = create_engine(db_url, echo=echo)
     try:
         try:
             engine.connect()
@@ -87,6 +89,9 @@ def connect(
     help="Database name to connect to.",
     envvar="PGDATABASE",
 )
+@click.option(
+    "-e", "--echo", is_flag=True, default=False, help="Spray SQL statements to stdout."
+)
 @click.pass_context
 def cli(
     ctx,
@@ -94,13 +99,14 @@ def cli(
     port: int,
     username: str,
     dbname: str,
+    echo: bool,
 ):
     """Heave CLI."""
     # default to postgres connection parameters
     dialect = "postgresql"
     driver = "psycopg"
     if "--help" not in sys.argv:
-        connect(ctx, dialect, dbname, host, str(port), username, driver)
+        connect(ctx, dialect, dbname, host, str(port), username, driver, echo=echo)
 
 
 @cli.command()
