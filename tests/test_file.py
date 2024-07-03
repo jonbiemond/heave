@@ -7,7 +7,7 @@ from pathlib import Path
 import openpyxl
 import pytest
 
-from heave import file, utils
+from heave import file
 from heave.file import Table
 
 
@@ -83,7 +83,7 @@ class TestXlsx:
     def test_xlsx_to_csv(self):
         """Test converting xlsx to csv using xlsx_to_csv function."""
         # First sheet and its content
-        csv_file1 = utils.xlsx_to_csv(self.test_file, sheet_name="1")
+        csv_file1 = file.xlsx_to_csv(self.test_file, sheet_name="1")
         assert csv_file1.exists()
         with open(csv_file1) as f:
             reader = csv.reader(f)
@@ -93,7 +93,7 @@ class TestXlsx:
         assert data[1] == ["data1", "data2"]
 
         # Second sheet and its content
-        csv_file2 = utils.xlsx_to_csv(self.test_file, sheet_name="2")
+        csv_file2 = file.xlsx_to_csv(self.test_file, sheet_name="2")
         assert csv_file2.exists()
         with open(csv_file2) as f:
             reader = csv.reader(f)
