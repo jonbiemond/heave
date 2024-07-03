@@ -1,4 +1,5 @@
 """Extract tabular data into a custom Table object."""
+
 import csv
 from pathlib import Path
 
