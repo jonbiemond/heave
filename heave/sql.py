@@ -1,4 +1,5 @@
 """Batch SQL operations."""
+
 from sqlalchemy import Connection, MetaData
 from sqlalchemy import Table as SqlTable
 from sqlalchemy.exc import IntegrityError
