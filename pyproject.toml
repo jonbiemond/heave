@@ -12,6 +12,9 @@ dependencies = [
     "psycopg[binary]>=3.2.1",
 ]
 
+[project.scripts]
+heave = "heave.cli:cli"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -56,7 +59,7 @@ commit_parser = "angular"
 logging_use_named_masks = false
 major_on_zero = true
 tag_format = "v{version}"
-build_command = "pip install poetry && poetry build"
+build_command = "pip install uv && uvx --from build pyproject-build --installer uv"
 
 [tool.semantic_release.branches.main]
 match = "(main)"
