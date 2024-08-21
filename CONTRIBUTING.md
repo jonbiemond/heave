@@ -6,20 +6,20 @@ To make a contribution, follow these steps:
 2. Make changes in a new branch including the issue number. e.g. `git checkout -b 42-new-feature`.
 3. If you modified the code (new feature or bug-fix), please add tests for it.
 4. Check the linting. [see below](https://github.com/jonbiemond/heave/blob/main/CONTRIBUTING.md#-linting)
-6. Ensure that all tests pass. [see below](https://github.com/jonbiemond/heave/blob/main/CONTRIBUTING.md#-testing)
-7. Submit a pull request.
+5. Ensure that all tests pass. [see below](https://github.com/jonbiemond/heave/blob/main/CONTRIBUTING.md#-testing)
+6. Submit a pull request.
 
 For more details about pull requests, please read [GitHub's guides](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
 
 
 ### 📦 Package manager
 
-We use `poetry` as our package manager. You can install poetry by following the instructions [here](https://python-poetry.org/docs/#installation).
+We use `uv` as our package manager. You can install uv by following the instructions [here](https://docs.astral.sh/uv/getting-started/installation/).
 
-Please DO NOT use pip or conda to install the dependencies. Instead, use poetry:
+Please DO NOT use pip or conda to install the dependencies. Instead, use uv:
 
 ```bash
-poetry install
+uv venv
 ```
 
 ### 📌 Pre-commit
@@ -35,7 +35,7 @@ pre-commit install
 Use `ruff` to lint your code. You can run the linter by running the following command:
 
 ```bash
-ruff .
+ruff check .
 ```
 
 Make sure that the linter does not report any errors or warnings before submitting a pull request.
