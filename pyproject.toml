@@ -1,6 +1,6 @@
 [project]
 name = "heave"
-version = "0.3.0"
+version = "0.4.0"
 description = "CLI tool to batch update or insert data."
 authors = [{name = "Jonathan Biemond", email = "jonathan.biemond@devrygreenhouses.com"},]
 license = "MIT"

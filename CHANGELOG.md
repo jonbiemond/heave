@@ -1,6 +1,41 @@
 # CHANGELOG
 
+## v0.4.0 (2024-08-21)
 
+### Chore
+
+* chore: migrate to uv
+
+Use the shiny new uv package manager.
+Refactor project structure to uv default. ([`ce4aa20`](https://github.com/jonbiemond/heave/commit/ce4aa20b75a1f8f0adb9956a30e80175d6f378b5))
+
+* chore: add binary extra to psycopg
+
+In case the host does not already have the binary and libpq installed. ([`8065eea`](https://github.com/jonbiemond/heave/commit/8065eeaf0e87b7052f203c587b0ba801534534d4))
+
+### Ci
+
+* ci: migrate to uv
+
+Replace references to Poetry with uv in CI config files. ([`db397cd`](https://github.com/jonbiemond/heave/commit/db397cd10e49037ab7a35f14833eee79c73dbe89))
+
+### Documentation
+
+* docs: migrate to uv
+
+Replace references to Poetry with uv. ([`827fec7`](https://github.com/jonbiemond/heave/commit/827fec762bcab1d4e5ea2edfe90d1e65c188f686))
+
+### Feature
+
+* feat(cli): add echo flag to emit sql to stdout ([`bb942fe`](https://github.com/jonbiemond/heave/commit/bb942feafbe70096b0376a7a34514240d38862dc))
+
+### Fix
+
+* fix(cli): don&#39;t create db connection if help
+
+Don&#39;t create a db connection if the help option is passed. This way connection parameters aren&#39;t required to see the help message for subcommands.
+
+Closes #17 ([`75c4c23`](https://github.com/jonbiemond/heave/commit/75c4c2377418da218e0211aaf91dea263ff88d53))
 
 ## v0.3.0 (2024-03-12)
 
@@ -31,7 +66,6 @@ Closes #14 ([`c27986a`](https://github.com/jonbiemond/heave/commit/c27986a6a272f
 
 Add parameter to handle conflicts by doing nothing or emitting an update. ([`c8a75e1`](https://github.com/jonbiemond/heave/commit/c8a75e1fd805b7090545f1bc90c9e98bfde1a7a9))
 
-
 ## v0.2.0 (2024-03-05)
 
 ### Documentation
@@ -45,7 +79,6 @@ Add parameter to handle conflicts by doing nothing or emitting an update. ([`c8a
 Allow user to specify table schema.
 
 Closes #11 ([`e348668`](https://github.com/jonbiemond/heave/commit/e34866851ecc13ffb3d481c6717d84e3e0f96f7e))
-
 
 ## v0.1.0 (2024-03-01)
 
