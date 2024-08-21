@@ -4,8 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from heave import file
-from heave.file import Table
+from src.heave import Table, file
 
 
 class TestTable:

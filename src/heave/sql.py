@@ -49,7 +49,7 @@ def insert(
     """Insert data into a table."""
     for row in data.rows:
         trans = connection.begin_nested()
-        stmt = sql_table.insert().values(dict(zip(data.header, row)))
+        stmt = sql_table.insert().values(dict(zip(data.header, row, strict=False)))
         try:
             connection.execute(stmt)
             trans.commit()
